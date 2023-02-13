@@ -28,6 +28,8 @@ Remember to align the itemized text with the first line of an item within a list
     `axis_resources` as an arg. If you were using it as a kwarg, then please
     use `shardings` instead. `axis_resources` will be removed after 3 months
     from Feb 13, 2023.
+  * `jax.experimental.maps.Mesh` has been deprecated. Use `jax.sharding.Mesh`
+    instead.
 
 ## jaxlib 0.4.4
   * Breaking changes
