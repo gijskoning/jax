@@ -23,6 +23,12 @@ Remember to align the itemized text with the first line of an item within a list
     `os.environ['JAX_JIT_PJIT_API_MERGE'] = '0'`.
     The merge must be disabled via an environment variable since it affects JAX
     at import time so it needs to be disabled before jax is imported.
+  * New deprecations:
+    * `jax.xla.Device` and `jax.interpreters.xla.Device`: use `jax.Device`.
+    * `jax.experimental.pjit.NamedSharding`: use `jax.sharding.NamedSharding`.
+    * `jax.experimental.pjit.PartitionSpec`: use `jax.sharding.PartitionSpec`.
+    * `jax.interpreters.pxla.Mesh`: use `jax.sharding.Mesh`.
+    * `jax.interpreters.pxla.PartitionSpec`: use `jax.sharding.PartitionSpec`.
 
 ## jaxlib 0.4.4
   * Breaking changes
