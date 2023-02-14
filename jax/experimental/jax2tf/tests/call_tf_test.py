@@ -868,6 +868,26 @@ class RoundTripToJaxTest(tf_test_util.JaxToTfTestCase):
     res = tf.function(converted_fun, jit_compile=True, autograph=False)(x, y)
     self.assertAllClose(expected, res.numpy(), atol=1e-5, rtol=1e-5)
 
+  def test_bfloat_input_data_type(self):
+    def tf_f(x):
+      res = tf.math.sin(x)
+      return tf.reduce_sum(res)
+
+    x = jnp.array([5.0]).astype(jnp.bfloat16)
+
+    fun_jax = jax.grad(jax2tf.call_tf(tf_f))
+    fun_jax_rt = jax2tf.call_tf(jax2tf.convert(fun_jax))
+
+    # Compiled function
+    self.assertAllClose(jax.jit(fun_jax)(x), jax.jit(fun_jax_rt)(x))
+
+    # TODO(b/269350069) Op-by-op eager mode fails due to np.asarray does not work with bfloat16.
+    with self.assertRaisesRegex(
+        ValueError, "object __array__ method not producing an array"
+    ):
+      _ = fun_jax(x)
+      _ = fun_jax_rt(x)
+
 
 class RoundTripToTfTest(tf_test_util.JaxToTfTestCase):
   "Reloading output of call_tf into TF with jax2tf."

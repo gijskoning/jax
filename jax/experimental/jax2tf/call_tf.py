@@ -201,7 +201,10 @@ def call_tf(callable_tf: Callable, has_side_effects=True) -> Callable:
 
       # TF does not like us to watch non-float vars
       def replace_non_float(arg):
-        if np.issubdtype(arg.dtype.as_numpy_dtype, np.inexact):
+        if (
+            np.issubdtype(arg.dtype.as_numpy_dtype, np.inexact)
+            or arg.dtype.is_floating
+        ):
           return arg
         else:
           # When watched, this will be ignored. When use in results it will
